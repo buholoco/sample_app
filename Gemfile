@@ -1,13 +1,18 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.11'
-gem 'pg'
+gem 'pg', '0.12.2'
+# Downgraded to 0.3.6 - 0.3.7 had some problems with guard-spork
+gem "childprocess", "0.3.6"
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 group :development, :test do
-  gem 'rspec-rails'
+  gem 'rspec-rails', '2.11.0'
+  gem 'guard-rspec', '1.2.1'
+  gem 'guard-spork', '1.2.0'
+  gem 'spork', '0.9.2'
 end
 
 
@@ -26,7 +31,9 @@ end
 gem 'jquery-rails'
 
 group :test do
-  gem 'capybara'
+  gem 'capybara', '1.1.2'
+  gem 'rb-inotify', '0.8.8'
+  gem 'libnotify', '0.5.9'
 end
 
 # To use ActiveModel has_secure_password
