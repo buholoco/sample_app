@@ -4,6 +4,7 @@ gem 'rails', '3.2.11'
 gem 'pg', '0.12.2'
 # Downgraded to 0.3.6 - 0.3.7 had some problems with guard-spork
 gem "childprocess", "0.3.6"
+gem 'bootstrap-sass', '2.1'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
