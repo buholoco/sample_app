@@ -14,8 +14,12 @@ group :development, :test do
   gem 'guard-rspec', '1.2.1'
   gem 'guard-spork', '1.2.0'
   gem 'spork', '0.9.2'
+  gem 'activerecord-postgres-hstore', github: 'engageis/activerecord-postgres-hstore'
 end
 
+group :development do
+  gem 'annotate', '2.5.0'
+end
 
 # Gems used only for assets and not required
 # in production environments by default.
