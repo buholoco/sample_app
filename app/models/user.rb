@@ -11,6 +11,14 @@
 #
 
 class User < ActiveRecord::Base
+FactoryGirl.define do
+  factory :user do
+    sequence(:name)     { |n| "Person #{n}" }
+    sequence(:email)    { |n| "person_#{n}@example.com" }
+    password "foobar"
+    password_confirmation "foobar"
+  end
+end
   attr_accessible :email, :name, :password, :password_confirmation
   has_secure_password
 
@@ -22,4 +30,12 @@ class User < ActiveRecord::Base
   validates :password_confirmation, presence: true
 
   before_save { self.email.downcase! }
+  before_save :create_remember_token
+
+
+  private
+
+  def create_remember_token
+    self.remember_token = SecureRandom.urlsafe_base64
+  end
 end
