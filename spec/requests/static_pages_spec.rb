@@ -27,9 +27,60 @@ describe "Static pages" do
         visit root_path
       end
 
-      it "should render the user's feed" do
-        user.feed.each do |item|
-          page.should have_selector("li##{item.id}", text: item.content)
+      describe "user's feed" do
+        it "should render the user's feed" do
+          user.feed.each do |item|
+            page.should have_selector("li##{item.id}", text: item.content)
+          end
+        end
+
+        describe "count" do
+          it "should have the right feed count" do
+            should have_selector('span', text: '2 microposts')
+          end
+
+          describe "after deleting a feed" do
+            before do
+              user.microposts.first.destroy
+              visit root_path
+            end
+
+            it { should have_selector('span', text: '1 micropost') }
+          end
+        end
+
+        describe "pagination" do
+          before(:all) { 50.times { |n| FactoryGirl.create(:micropost, user: user, content: "Content-#{n}") } }
+          after(:all) { user.destroy }
+
+          it { should have_selector('div.pagination') }
+
+          it "should list each micropost" do
+            user.microposts.paginate(page: 1).each do |micropost|
+              page.should have_selector('li', text: micropost.content)
+            end
+          end
+        end
+
+        describe "delete link" do
+          describe "owned microposts" do
+            it "should have delete link for owned microposts" do
+              user.microposts.each do |micropost|
+                should have_link('delete')
+              end
+            end
+          end
+
+          describe "other users microposts" do
+            before do
+              @other_user = FactoryGirl.create(:user, email: "other@example.org")
+              FactoryGirl.create(:micropost, user: @other_user)
+              visit user_path(@other_user)
+            end
+            it "should not have delete link" do
+              should_not have_link('delete')
+            end
+          end
         end
       end
     end
